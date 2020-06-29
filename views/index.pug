@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 todoアプリを作ってみた
+  p#complete-num 完了：0
+  p#rest-num 残り：0
+  p#level Lv. 1（次のレベルまで1）
+  input(type="text")#title
+  textarea(name="memo")#description
+  button(type="submit")#create-button todoを作成
+  div#todo-area
+
+
