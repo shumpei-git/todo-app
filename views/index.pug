@@ -2,12 +2,14 @@ extends layout
 
 block content
   h1 todoアプリを作ってみた
-  p#complete-num 完了：0
-  p#rest-num 残り：0
-  p#level Lv. 1（次のレベルまで1）
-  input(type="text")#title
-  textarea(name="memo")#description
-  button(type="submit")#create-button todoを作成
+  div#status-area
+    h2#complete-num 完了：0
+    h2#rest-num 残り：0
+    h3#level Lv. 1（次のレベルまで1）
+  div#input-area
+    input(type="text" placeholder="タイトル※必須")#title-input
+    textarea(name="memo" placeholder="説明を入力")#description-input
+    button(type="submit")#create-button todoを作成
   div#todo-area
 
 

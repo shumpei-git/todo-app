@@ -1,12 +1,131 @@
+/* 共通設定 */
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: white;
+  background-color: mediumseagreen;
 }
 
 a {
-  color: #00B7FF;
+  color: purple;
+}
+
+/* ページタイトル */
+
+h1 {
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* status-area */
+
+#status-area {
+  width: 200px;
+  margin: 0 auto;
+}
+
+#complete-num {
+  float: left;
+}
+
+#rest-num {
+  float: right;
+}
+
+#level {
+  clear: both;
+}
+
+/* input-area */
+
+#input-area {
+  width: 300px;
+  margin: 0 auto;
+}
+
+#title-input {
+  width: 200px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+#description-input {
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+#create-button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+/* todo-area */
+
+#todo-area {
+  width: 400px;
+  margin: 0 auto;
+}
+
+/* todo-card */
+
+.todo-card {
+  margin-top: 10px;
+  padding: 5px;
+  color: mediumseagreen;
+  background-color: white;
+}
+
+.title {
+  float: left;
+  margin: 5px;
+  width: 200px;
+  word-wrap: break-word;
+}
+
+.complete {
+  float: right;
+  margin: 5px;
+}
+
+.description {
+  clear: both;
+  margin: 10px 30px;
+  width: 340px;
+  word-wrap: break-word;
+  text-align: center;
 }
 
 .clickable {
   cursor: pointer;
+}
+
+/* confirm-card */
+
+.confirm-card {
+  margin-top: 10px;
+  padding: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.confirm-title {
+  float: left;
+  margin: 10px;
+  width: 150px;
+  word-wrap: break-word;
+}
+
+.undo {
+  float: left;
+  margin: 10px;
+}
+
+.delete {
+  float: left;
+  margin: 10px;
 }

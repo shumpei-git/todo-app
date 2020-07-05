@@ -98,13 +98,12 @@ __webpack_require__.r(__webpack_exports__);
 var completeNumDivided = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#complete-num');
 var restNumDivided = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#rest-num');
 var levelDivided = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#level');
-var titleInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#title');
-var descriptionInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#description');
+var titleInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#title-input');
+var descriptionInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#description-input');
 var createButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#create-button');
-var todoDivided = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#todo-area'); //var completeLink = $('.complete');
-//console.log(completeLink);
+var todoDivided = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#todo-area');
+var todoSeq = 0; // 「todoを作成」ボタン押下時に発火する処理
 
-var todoSeq = 0;
 createButton.click(function () {
   var title = titleInput.val();
   var description = descriptionInput.val();
@@ -116,73 +115,108 @@ createButton.click(function () {
   } // todoを追加
 
 
-  var newTodo = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div></div>');
-  var newTitle = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p></p>');
+  var newTodo = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div class="todo-card"></div>');
+  var newTitle = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p class="title"></p>');
   ++todoSeq;
   newTitle.text("".concat(todoSeq, "\uFF1A").concat(title));
   newTodo.append(newTitle);
-  var newComplete = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a class="complete clickable"></a>');
-  newComplete.text('完了！');
+  var newComplete = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a class="complete clickable">完了！</a>');
   newTodo.append(newComplete);
-  var newDescription = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p></p>');
+  var newDescription = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p class="description"></p>');
   newDescription.text(description);
   newTodo.append(newDescription);
-  todoDivided.append(newTodo); //completeLink = $('.complete'); //completeLinkを更新
-  //console.log(completeLink);
-  // 「残り」を一つ増やす
+  todoDivided.append(newTodo); // 「残り」を一つ増やす
 
   var restNum = parseInt(restNumDivided.text().split('：')[1]);
   ++restNum;
-  restNumDivided.text("\u6B8B\u308A\uFF1A".concat(restNum));
-});
+  restNumDivided.text("\u6B8B\u308A\uFF1A".concat(restNum)); // todoタイトル入力欄とtodo説明入力欄の文字列を消去
+
+  titleInput.val('');
+  descriptionInput.val('');
+}); // 「完了！」リンク押下時に発火する処理
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  var _this = this;
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("click", ".complete", function (event) {
+    // 完了ボタンが押されたTODOを非表示にする
+    var completeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(event.currentTarget);
+    var todoCard = completeButton.parent();
+    todoCard.hide(); // 完了ボタンが押されたTODOのタイトルと、「元に戻す」リンクと「削除」リンクを表示する
 
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("click", ".complete", function () {
-    console.log('完了！がクリックされたよ。'); // TODO 完了ボタンが押されたTODOを非表示にする
+    var confirmCard = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<div class="confirm-card"></div>');
+    var todoTitle = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p class="confirm-title"></p>');
+    var todoTitleText = completeButton.prev().text();
+    todoTitle.text(todoTitleText);
+    confirmCard.append(todoTitle);
+    var undoLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a class="undo clickable">元に戻す</a>');
+    undoLink.text();
+    confirmCard.append(undoLink);
+    var deleteLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<a class="delete clickable">削除</a>');
+    confirmCard.append(deleteLink);
+    todoCard.after(confirmCard); // 「完了」を一つ増やす
 
-    console.log(jquery__WEBPACK_IMPORTED_MODULE_0___default()(_this));
-    var todoCard = jquery__WEBPACK_IMPORTED_MODULE_0___default()(_this).parent();
-    console.log(todoCard);
-    todoCard.hide(); // TODO 完了ボタンが押されたTODOのタイトルと、「元に戻す」リンクと「削除」リンクを表示する
-    // TODO 「完了」を一つ増やす
-    // TODO 「残り」を一減らす
+    var completeNum = parseInt(completeNumDivided.text().split('：')[1]);
+    ++completeNum;
+    completeNumDivided.text("\u5B8C\u4E86\uFF1A".concat(completeNum)); // 「残り」を一減らす
 
     var restNum = parseInt(restNumDivided.text().split('：')[1]);
     --restNum;
-    restNumDivided.text("\u6B8B\u308A\uFF1A".concat(restNum)); // TODO レベル欄を更新する
-    // var level = parseInt(levelDivided.text().split(' ')[1].split('（')[0]);
+    restNumDivided.text("\u6B8B\u308A\uFF1A".concat(restNum)); // レベル欄を更新する
+
+    var level = parseInt(levelDivided.text().split(' ')[1].split('（')[0]);
+    var toTheNextLevel = parseInt(levelDivided.text().split('（次のレベルまで')[1].split('）')[0]);
+
+    if (toTheNextLevel - 1 === 0) {
+      ++level;
+      toTheNextLevel = level;
+    } else {
+      --toTheNextLevel;
+    }
+
+    levelDivided.text("Lv. ".concat(level, "\uFF08\u6B21\u306E\u30EC\u30D9\u30EB\u307E\u3067").concat(toTheNextLevel, "\uFF09"));
+  });
+}); // 「元に戻す」リンク押下時に発火する処理
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("click", ".undo", function (event) {
+    // 「元に戻す」ボタンが押されたTODOを再表示し、confirmCardを削除
+    var undoLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()(event.currentTarget);
+    var confirmCard = undoLink.parent();
+    var todoCard = confirmCard.prev();
+    todoCard.show();
+    confirmCard.remove(); // 「完了」を一つ減らす
+
+    var completeNum = parseInt(completeNumDivided.text().split('：')[1]);
+    --completeNum;
+    completeNumDivided.text("\u5B8C\u4E86\uFF1A".concat(completeNum)); // 「残り」を一増やす
+
+    var restNum = parseInt(restNumDivided.text().split('：')[1]);
+    ++restNum;
+    restNumDivided.text("\u6B8B\u308A\uFF1A".concat(restNum)); // レベル欄を更新する
+
+    var level = parseInt(levelDivided.text().split(' ')[1].split('（')[0]);
+    var toTheNextLevel = parseInt(levelDivided.text().split('（次のレベルまで')[1].split('）')[0]);
+
+    if (toTheNextLevel === level) {
+      --level;
+      toTheNextLevel = 1;
+    } else {
+      ++toTheNextLevel;
+    }
+
+    levelDivided.text("Lv. ".concat(level, "\uFF08\u6B21\u306E\u30EC\u30D9\u30EB\u307E\u3067").concat(toTheNextLevel, "\uFF09"));
+  });
+}); // 「削除」リンク押下時に発火する処理
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("click", ".delete", function (event) {
+    // 「元に戻す」ボタンが押されたTODOを再表示し、confirmCardを削除
+    var deleteLink = jquery__WEBPACK_IMPORTED_MODULE_0___default()(event.currentTarget);
+    var confirmCard = deleteLink.parent();
+    var todoCard = confirmCard.prev();
+    todoCard.remove();
+    confirmCard.remove();
   });
 });
-/*
-completeLink.click(() => {
-  console.log('完了！がクリックされたよ。');
-  alert('完了！がクリックされました。');
-});
-*/
-
-/*
-$(function() {
-  $('.complete').click(() => {
-    alert('完了！がクリックされました。');
-    // var level = parseInt(levelDivided.text().split(' ')[1].split('（')[0]);
-  });
-});
-*/
-
-/*
-$(function() {
-  $('.complete').click(() => {
-    var todoCard = $(this).parent();
-    console.log(todoCard);
-    var children = todoCard.children();
-    console.log(children);
-    children.hide();
-
-    // var level = parseInt(levelDivided.text().split(' ')[1].split('（')[0]);
-  });
-});
-*/
 
 /***/ }),
 /* 1 */

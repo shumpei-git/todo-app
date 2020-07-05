@@ -1,0 +1,7 @@
+{
+  "name": "todo-app",
+  "description": "todoアプリを作ってみた",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
